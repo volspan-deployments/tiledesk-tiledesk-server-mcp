@@ -28,6 +28,7 @@ def get_headers(token: Optional[str] = None) -> dict:
 @mcp.tool()
 async def list_projects() -> dict:
     """List all Tiledesk projects accessible with the configured admin token."""
+    _track("list_projects")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/projects",
@@ -41,6 +42,7 @@ async def list_projects() -> dict:
 @mcp.tool()
 async def get_project(project_id: str) -> dict:
     """Get details of a specific Tiledesk project by its ID."""
+    _track("get_project")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}",
@@ -53,6 +55,7 @@ async def get_project(project_id: str) -> dict:
 
 @mcp.tool()
 async def list_requests(
+    _track("list_requests")
     project_id: str,
     status: Optional[int] = None,
     page: Optional[int] = None,
@@ -81,6 +84,7 @@ async def list_requests(
 @mcp.tool()
 async def get_request(project_id: str, request_id: str) -> dict:
     """Get details of a specific support request by project ID and request ID."""
+    _track("get_request")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/requests/{request_id}",
@@ -93,6 +97,7 @@ async def get_request(project_id: str, request_id: str) -> dict:
 
 @mcp.tool()
 async def create_request(
+    _track("create_request")
     project_id: str,
     text: str,
     department_id: Optional[str] = None,
@@ -128,6 +133,7 @@ async def create_request(
 @mcp.tool()
 async def close_request(project_id: str, request_id: str) -> dict:
     """Close (resolve) a support request by setting its status to closed (200)."""
+    _track("close_request")
     async with httpx.AsyncClient() as client:
         response = await client.patch(
             f"{TILEDESK_BASE_URL}/{project_id}/requests/{request_id}",
@@ -142,6 +148,7 @@ async def close_request(project_id: str, request_id: str) -> dict:
 @mcp.tool()
 async def reopen_request(project_id: str, request_id: str) -> dict:
     """Reopen a closed support request by setting its status back to open (100)."""
+    _track("reopen_request")
     async with httpx.AsyncClient() as client:
         response = await client.patch(
             f"{TILEDESK_BASE_URL}/{project_id}/requests/{request_id}",
@@ -155,6 +162,7 @@ async def reopen_request(project_id: str, request_id: str) -> dict:
 
 @mcp.tool()
 async def assign_request(
+    _track("assign_request")
     project_id: str,
     request_id: str,
     agent_id: str,
@@ -174,6 +182,7 @@ async def assign_request(
 @mcp.tool()
 async def list_messages(project_id: str, request_id: str) -> dict:
     """List all messages in a specific support request/conversation."""
+    _track("list_messages")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/requests/{request_id}/messages",
@@ -186,6 +195,7 @@ async def list_messages(project_id: str, request_id: str) -> dict:
 
 @mcp.tool()
 async def send_message(
+    _track("send_message")
     project_id: str,
     request_id: str,
     text: str,
@@ -213,6 +223,7 @@ async def send_message(
 @mcp.tool()
 async def list_agents(project_id: str) -> dict:
     """List all agents (project users) for a given Tiledesk project."""
+    _track("list_agents")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/project_users",
@@ -226,6 +237,7 @@ async def list_agents(project_id: str) -> dict:
 @mcp.tool()
 async def get_agent(project_id: str, agent_id: str) -> dict:
     """Get details of a specific agent in a Tiledesk project."""
+    _track("get_agent")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/project_users/{agent_id}",
@@ -239,6 +251,7 @@ async def get_agent(project_id: str, agent_id: str) -> dict:
 @mcp.tool()
 async def list_departments(project_id: str) -> dict:
     """List all departments configured in a Tiledesk project."""
+    _track("list_departments")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/departments",
@@ -252,6 +265,7 @@ async def list_departments(project_id: str) -> dict:
 @mcp.tool()
 async def get_department(project_id: str, department_id: str) -> dict:
     """Get details of a specific department in a Tiledesk project."""
+    _track("get_department")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/departments/{department_id}",
@@ -264,6 +278,7 @@ async def get_department(project_id: str, department_id: str) -> dict:
 
 @mcp.tool()
 async def create_department(
+    _track("create_department")
     project_id: str,
     name: str,
     default_department: Optional[bool] = None,
@@ -290,6 +305,7 @@ async def create_department(
 @mcp.tool()
 async def list_leads(project_id: str, page: Optional[int] = None, limit: Optional[int] = None) -> dict:
     """List all leads (visitors/contacts) for a given Tiledesk project."""
+    _track("list_leads")
     params = {}
     if page is not None:
         params["page"] = page
@@ -310,6 +326,7 @@ async def list_leads(project_id: str, page: Optional[int] = None, limit: Optiona
 @mcp.tool()
 async def get_lead(project_id: str, lead_id: str) -> dict:
     """Get details of a specific lead (visitor/contact) in a Tiledesk project."""
+    _track("get_lead")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/leads/{lead_id}",
@@ -322,6 +339,7 @@ async def get_lead(project_id: str, lead_id: str) -> dict:
 
 @mcp.tool()
 async def get_analytics(
+    _track("get_analytics")
     project_id: str,
     start: Optional[str] = None,
     end: Optional[str] = None,
@@ -347,6 +365,7 @@ async def get_analytics(
 @mcp.tool()
 async def list_faq_bots(project_id: str) -> dict:
     """List all FAQ bots / chatbots configured in a Tiledesk project."""
+    _track("list_faq_bots")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/faqbots",
@@ -360,6 +379,7 @@ async def list_faq_bots(project_id: str) -> dict:
 @mcp.tool()
 async def get_faq_bot(project_id: str, bot_id: str) -> dict:
     """Get details of a specific FAQ bot in a Tiledesk project."""
+    _track("get_faq_bot")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/faqbots/{bot_id}",
@@ -373,6 +393,7 @@ async def get_faq_bot(project_id: str, bot_id: str) -> dict:
 @mcp.tool()
 async def list_faqs(project_id: str, bot_id: str) -> dict:
     """List all FAQ entries (intents) for a specific FAQ bot in a Tiledesk project."""
+    _track("list_faqs")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/faqbots/{bot_id}/faqs",
@@ -385,6 +406,7 @@ async def list_faqs(project_id: str, bot_id: str) -> dict:
 
 @mcp.tool()
 async def create_faq(
+    _track("create_faq")
     project_id: str,
     bot_id: str,
     question: str,
@@ -410,6 +432,7 @@ async def create_faq(
 @mcp.tool()
 async def delete_faq(project_id: str, bot_id: str, faq_id: str) -> dict:
     """Delete a FAQ entry from a specific FAQ bot."""
+    _track("delete_faq")
     async with httpx.AsyncClient() as client:
         response = await client.delete(
             f"{TILEDESK_BASE_URL}/{project_id}/faqbots/{bot_id}/faqs/{faq_id}",
@@ -423,6 +446,7 @@ async def delete_faq(project_id: str, bot_id: str, faq_id: str) -> dict:
 @mcp.tool()
 async def list_triggers(project_id: str) -> dict:
     """List all automation triggers configured in a Tiledesk project."""
+    _track("list_triggers")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/triggers",
@@ -436,6 +460,7 @@ async def list_triggers(project_id: str) -> dict:
 @mcp.tool()
 async def get_project_settings(project_id: str) -> dict:
     """Get the settings/configuration for a specific Tiledesk project."""
+    _track("get_project_settings")
     async with httpx.AsyncClient() as client:
         response = await client.get(
             f"{TILEDESK_BASE_URL}/{project_id}/settings",
@@ -448,6 +473,7 @@ async def get_project_settings(project_id: str) -> dict:
 
 @mcp.tool()
 async def update_project_settings(
+    _track("update_project_settings")
     project_id: str,
     settings: dict,
 ) -> dict:
